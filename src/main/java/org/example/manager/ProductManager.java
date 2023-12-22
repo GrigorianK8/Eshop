@@ -29,10 +29,6 @@ public class ProductManager {
     }
 
     public void editProduct(Product product) {
-        if (getProductById(product.getId()) == null) {
-            System.out.println("Product with ID " + product.getId() + " does not exist!");
-            return;
-        }
         String query = "UPDATE product SET name = ?, description = ?, price = ?, quantity = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, product.getName());
@@ -47,10 +43,6 @@ public class ProductManager {
     }
 
     public void deleteProductById(int id) {
-        if (getProductById(id) == null) {
-            System.out.println("Product with ID " + id + " does not exist");
-            return;
-        }
         String sql = "DELETE FROM product WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);

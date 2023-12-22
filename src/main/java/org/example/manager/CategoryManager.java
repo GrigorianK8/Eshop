@@ -24,10 +24,6 @@ public class CategoryManager {
     }
 
     public void editCategory(Category category) {
-        if (getCategoryById(category.getId()) == null) {
-            System.out.println("Category with ID " + category.getId() + " does not exist!");
-            return;
-        }
         String query = "UPDATE category SET name = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, category.getName());
@@ -39,13 +35,10 @@ public class CategoryManager {
     }
 
     public void deleteCategoryById(int id) {
-        if (getCategoryById(id) == null) {
-            System.out.println("Author with " + id + "does not exist");
-            return;
-        }
-        String sql = "DELETE FROM category WHERE id = " + id;
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
+        String sql = "DELETE FROM category WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
